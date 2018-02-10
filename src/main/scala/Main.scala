@@ -3,6 +3,7 @@ import spark_helpers.SparkSessionHelper
 object Main {
   def main(args: Array[String]): Unit = {
     val spark = SparkSessionHelper.buildSession()
-    println(spark.version)
+    val sparkVersion = spark.version
+    println(s"Spark Version: $sparkVersion")
   }
 }
