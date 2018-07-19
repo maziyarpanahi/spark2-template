@@ -28,6 +28,11 @@ object examples {
       .orderBy($"count".desc).
       show(10)
 
+    toursDF.select($"tourPrice")
+      .filter($"tourPrice" > 500)
+      .orderBy($"tourPrice".desc)
+      .show(20)
+
 
   }
 }
