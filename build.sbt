@@ -1,38 +1,92 @@
 name := "spark2-template"
 
-version := "0.1"
+import sbtassembly.MergeStrategy
+import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 
-scalaVersion := "2.11.12"
+enablePlugins(JavaServerAppPackaging)
+enablePlugins(JavaAppPackaging)
 
-licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
+val sparkVer = "2.3.1"
+val corenlpVer = "3.9.2"
+val hadoopVer = "2.7.2"
+val scalaTestVer = "3.0.0"
+val sparknlpVer = "1.7.2"
 
-resolvers ++= Seq(
-  "JBoss Repository" at "http://repository.jboss.org/nexus/content/repositories/releases/",
-  "Spray Repository" at "http://repo.spray.cc/",
-  "Cloudera Repository" at "https://repository.cloudera.com/artifactory/cloudera-repos/",
-  "Akka Repository" at "http://repo.akka.io/releases/",
-  "Twitter4J Repository" at "http://twitter4j.org/maven2/",
-  "Apache HBase" at "https://repository.apache.org/content/repositories/releases",
-  "Twitter Maven Repo" at "http://maven.twttr.com/",
-  "scala-tools" at "https://oss.sonatype.org/content/groups/scala-tools",
-  "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
-  "Second Typesafe repo" at "http://repo.typesafe.com/typesafe/maven-releases/",
-  "Mesosphere Public Repository" at "http://downloads.mesosphere.io/maven",
-  "Apache Repository" at "https://repository.apache.org/content/repositories/releases/",
-  "Cloudera Repository" at "https://repository.cloudera.com/artifactory/cloudera-repos/",
-  Resolver.sonatypeRepo("public")
+
+// PROJECTS
+lazy val root = (project in file("."))
+  .settings(
+    commonSettings,
+    assemblySettings,
+    libraryDependencies ++=
+      analyticsDependencies ++
+        testDependencies ++
+        utilDependencies
+  )
+
+// DEPENDENCIES
+lazy val analyticsDependencies = Seq(
+  "org.apache.spark" %% "spark-core" % sparkVer,
+  "org.apache.spark" %% "spark-sql" % sparkVer,
+  "org.apache.spark" %% "spark-streaming" % sparkVer,
+  "org.apache.spark" %% "spark-mllib" %sparkVer,
+  "org.apache.spark" %% "spark-hive" % sparkVer,
+  "org.apache.spark" %% "spark-graphx" % sparkVer,
+  "org.apache.spark" %% "spark-yarn" % sparkVer
 )
 
-libraryDependencies ++= {
-  val sparkVer = "2.2.0"
-  Seq(
-    "org.apache.spark" %% "spark-core" % sparkVer,
-    "org.apache.spark" %% "spark-sql" % sparkVer,
-    "org.apache.spark" %% "spark-streaming" % sparkVer,
-    "org.apache.spark" %% "spark-mllib" %sparkVer,
-    "org.apache.spark" %% "spark-hive" % sparkVer,
-    "org.apache.spark" %% "spark-graphx" % sparkVer,
-    "org.apache.spark" %% "spark-yarn" % sparkVer,
-    "com.typesafe" % "config" % "1.3.2"
-  )
-}
+lazy val testDependencies = Seq(
+  "org.scalatest" %% "scalatest" % scalaTestVer % "test"
+)
+
+lazy val utilDependencies = Seq(
+  "com.typesafe" % "config" % "1.3.1",
+  "com.johnsnowlabs.nlp" %% "spark-nlp" % sparknlpVer
+)
+
+// SETTINGS
+lazy val commonSettings = Seq(
+  version := "1.0.0",
+  scalaVersion := "2.11.12",
+  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
+  licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
+)
+
+lazy val assemblySettings = Seq(
+  assemblyJarName in assembly := "multivac-" + name.value + ".jar",
+  assemblyExcludedJars in assembly := {
+    val cp = (fullClasspath in assembly).value
+    cp filter {
+      j => {
+        j.data.getName.startsWith("spark-core") ||
+          j.data.getName.startsWith("spark-sql") ||
+          j.data.getName.startsWith("spark-hive") ||
+          j.data.getName.startsWith("spark-mllib") ||
+          j.data.getName.startsWith("spark-graphx") ||
+          j.data.getName.startsWith("spark-yarn") ||
+          j.data.getName.startsWith("spark-streaming") ||
+          j.data.getName.startsWith("hadoop") ||
+          j.data.getName.startsWith("hadoop-client")
+      }
+    }
+  },
+  assemblyMergeStrategy in assembly := {
+    case PathList("javax", "servlet", xs @ _*) => MergeStrategy.last
+    case PathList("javax", "activation", xs @ _*) => MergeStrategy.last
+    case PathList("org", "apache", xs @ _*) => MergeStrategy.last
+    case PathList("com", "google", xs @ _*) => MergeStrategy.last
+    case PathList("com", "esotericsoftware", xs @ _*) => MergeStrategy.last
+    case PathList("com", "codahale", xs @ _*) => MergeStrategy.last
+    case PathList("com", "yammer", xs @ _*) => MergeStrategy.last
+    case "about.html" => MergeStrategy.rename
+    case "META-INF/ECLIPSEF.RSA" => MergeStrategy.last
+    case "META-INF/mailcap" => MergeStrategy.last
+    case "META-INF/mimetypes.default" => MergeStrategy.last
+    case "plugin.properties" => MergeStrategy.last
+    case "log4j.properties" => MergeStrategy.last
+    case x =>
+      val oldStrategy = (assemblyMergeStrategy in assembly).value
+      oldStrategy(x)
+  }
+)
+
