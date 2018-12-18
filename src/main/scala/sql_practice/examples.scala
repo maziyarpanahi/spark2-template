@@ -1,11 +1,11 @@
 package sql_practice
 
-import spark_helpers.SparkSessionHelper
 import org.apache.spark.sql.functions._
+import spark_helpers.SessionBuilder
 
 object examples {
   def exec1(): Unit ={
-    val spark = SparkSessionHelper.getSparkSession()
+    val spark = SessionBuilder.buildSession()
     import spark.implicits._
 
     val toursDF = spark.read

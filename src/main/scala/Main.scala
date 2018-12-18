@@ -1,8 +1,10 @@
-import spark_helpers.SparkSessionHelper
+import spark_helpers.SessionBuilder
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val spark = SparkSessionHelper.buildSession()
+
+    val spark = SessionBuilder.buildSession()
+
     val sparkVersion = spark.version
     println(s"Spark Version: $sparkVersion")
 
