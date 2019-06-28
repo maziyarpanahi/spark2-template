@@ -6,11 +6,11 @@ import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 enablePlugins(JavaServerAppPackaging)
 enablePlugins(JavaAppPackaging)
 
-val sparkVer = "2.3.1"
+val sparkVer = "2.4.3"
 val corenlpVer = "3.9.2"
 val hadoopVer = "2.7.2"
 val scalaTestVer = "3.0.0"
-val sparknlpVer = "1.7.2"
+val sparknlpVer = "2.0.8"
 
 
 // PROJECTS
@@ -46,7 +46,7 @@ lazy val utilDependencies = Seq(
 
 // SETTINGS
 lazy val commonSettings = Seq(
-  version := "1.0.0",
+  version := "1.1.0",
   scalaVersion := "2.11.12",
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
