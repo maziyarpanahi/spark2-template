@@ -25,8 +25,8 @@ object examples {
       .select(explode($"tourTags"), $"tourDifficulty")
       .groupBy($"col", $"tourDifficulty")
       .count()
-      .orderBy($"count".desc).
-      show(10)
+      .orderBy($"count".desc)
+      .show(10)
 
     toursDF.select($"tourPrice")
       .filter($"tourPrice" > 500)
