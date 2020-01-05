@@ -2,7 +2,7 @@
 
 This is a Intellij template for developing Apache Spark 2.4.x applications.
 
-**NOTE:** This repo is only for teaching purposes only :)
+**NOTE:** This repo is for teaching :)
 
 ## Requirements
 
