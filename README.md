@@ -1,5 +1,6 @@
 # spark2-template
-This is a Intellij template for developing Apache Spark 2.3.x applications.
+
+This is a Intellij template for developing Apache Spark 2.4.x applications.
 
 **NOTE:** This repo is only for teaching purposes only :)
 
@@ -7,12 +8,6 @@ This is a Intellij template for developing Apache Spark 2.3.x applications.
 
 Install `scala` and `sbt` (or maybe Java as well)
 
-macOS:
-```bash
-brew update
-brew install scala
-brew install sbt
-```
 Ubuntu:
 ```bash
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
@@ -21,11 +16,20 @@ sudo apt-get update
 sudo apt-get install sbt
 sudo apt-get install scala
 ```
+
+macOS:
+```bash
+brew update
+brew install scala
+brew install sbt
+```
+
 In any case, please make sure you have JAVA and it is up to date:
 
 ```bash
 java --version
 ```
+
 
 ## Evaluation
 You should fork this repository, commit your changes and push them into your own GitHub account.
