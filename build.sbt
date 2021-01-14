@@ -40,7 +40,7 @@ lazy val testDependencies = Seq(
 )
 
 lazy val utilDependencies = Seq(
-  "com.typesafe" % "config" % "1.3.1",
+  "com.typesafe" % "config" % "1.4.1",
   "com.johnsnowlabs.nlp" %% "spark-nlp" % sparknlpVer
 )
 
