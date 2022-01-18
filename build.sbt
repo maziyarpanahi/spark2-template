@@ -6,11 +6,19 @@ import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 enablePlugins(JavaServerAppPackaging)
 enablePlugins(JavaAppPackaging)
 
+// SETTINGS
+lazy val commonSettings = Seq(
+  version := "1.2.0",
+  scalaVersion := "2.11.12",
+  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
+  licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
+)
+
 val sparkVer = "2.4.7"
 val corenlpVer = "3.9.2"
 val hadoopVer = "2.7.2"
 val scalaTestVer = "3.0.0"
-val sparknlpVer = "2.7.1"
+val sparknlpVer = "3.4.0"
 
 
 // PROJECTS
@@ -41,15 +49,7 @@ lazy val testDependencies = Seq(
 
 lazy val utilDependencies = Seq(
   "com.typesafe" % "config" % "1.4.1",
-  "com.johnsnowlabs.nlp" %% "spark-nlp" % sparknlpVer
-)
-
-// SETTINGS
-lazy val commonSettings = Seq(
-  version := "1.1.0",
-  scalaVersion := "2.11.12",
-  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
-  licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
+  "com.johnsnowlabs.nlp" %% "spark-nlp-spark24" % sparknlpVer
 )
 
 lazy val assemblySettings = Seq(

@@ -4,7 +4,7 @@ import org.apache.spark.sql.functions._
 import spark_helpers.SessionBuilder
 
 object examples {
-  def exec1(): Unit ={
+  def exec1(): Unit = {
     val spark = SessionBuilder.buildSession()
     import spark.implicits._
 
